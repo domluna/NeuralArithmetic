@@ -6,8 +6,9 @@ Creates a Neural Accumulator (NAC), which contrains the output values close to -
     W = tanh.(Ŵ) .* sigmoid.(M̂)
     a = W * x
 
-The input `x` is a vector of length `in`. The output `a` will be
-a vector of length `out`.
+The input `x` is a:
+    * vector of length `in`. 
+    * matrix of size (`in`, `batch_size`).
 
 https://arxiv.org/abs/1808.00508
 """
