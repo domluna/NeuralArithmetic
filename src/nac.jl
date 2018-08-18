@@ -1,5 +1,5 @@
 """
-    NAC(in::Int, out::Int, init=glorot_uniform)
+    NAC(in::Integer, out::Integer, init=glorot_uniform)
 
 Creates a Neural Accumulator (NAC), which contrains the output values close to -1, 0, and 1.
 
@@ -18,7 +18,7 @@ struct NAC{T}
 end
 
 
-function NAC(in::Int, out::Int, init=glorot_uniform)
+function NAC(in::Integer, out::Integer; init = glorot_uniform)
     return NAC(param(init(out, in)), param(init(out, in)))
 end
 

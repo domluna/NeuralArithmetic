@@ -1,4 +1,6 @@
 """
+    NALU(in::Integer, out::Integer, init=glorot_uniform)
+
 Neural Arithmetic Logic Unit (NALU). [1]
 
     W = tanh.(Ŵ) .* sigmoid.(M̂)
@@ -20,7 +22,7 @@ struct NALU{T}
 end
 
 
-function NALU(in::Int, out::Int, init=glorot_uniform)
+function NALU(in::Integer, out::Integer; init = glorot_uniform)
     return NALU(param(init(out, in)), param(init(out, in)), param(init(out, in)))
 end
 
