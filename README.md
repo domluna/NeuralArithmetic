@@ -1,4 +1,4 @@
-# NeuralArithmetic
+# Neural Arithmetic
 
 Recreating experiments from [*Neural Arithmetic Logic Units*](https://arxiv.org/abs/1808.00508).
 
