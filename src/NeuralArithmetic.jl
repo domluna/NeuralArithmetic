@@ -9,5 +9,6 @@ export NAC, NALU
 
 include("nac.jl")
 include("nalu.jl")
+include("recurrent.jl")
 
 end # module
