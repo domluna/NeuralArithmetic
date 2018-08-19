@@ -1,10 +1,10 @@
 """
-    NAC(in::Integer, out::Integer, init=glorot_uniform)
+    NAC(in::Integer, out::Integer; initW = glorot_uniform, initb = zeros)
 
 Creates a Neural Accumulator (NAC), which contrains the output values close to -1, 0, and 1.
 
     W = tanh.(Ŵ) .* sigmoid.(M̂)
-    a = W * x
+    a = W * x .+ b
 
 The input `x` is a:
     * vector of length `in`. 
@@ -12,21 +12,23 @@ The input `x` is a:
 
 https://arxiv.org/abs/1808.00508
 """
-struct NAC{T}
+struct NAC{T,S}
     Ŵ::T
     M̂::T
+    b::S
 end
 
 
-function NAC(in::Integer, out::Integer; init = glorot_uniform)
-    return NAC(param(init(out, in)), param(init(out, in)))
+function NAC(in::Integer, out::Integer; initW = glorot_uniform, initb = zeros)
+    return NAC(param(initW(out, in)), param(initW(out, in)), param(initb(out)))
 end
 
 @treelike NAC
 
 function (n::NAC)(x)
-    W = tanh.(n.Ŵ) .* sigmoid.(n.M̂)
-    W * x
+    Ŵ, M̂, b = n.Ŵ, n.M̂, n.b
+    W = tanh.(Ŵ) .* sigmoid.(M̂)
+    W * x .+ b
 end
 
 Base.show(io::IO, l::NAC) = print(io, "NAC(", size(l.Ŵ, 2), ", ", size(l.Ŵ, 1), ")")

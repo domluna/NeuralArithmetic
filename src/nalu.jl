@@ -1,12 +1,12 @@
 """
-    NALU(in::Integer, out::Integer, init=glorot_uniform)
+    NALU(in::Integer, out::Integer; initW = glorot_uniform, initb = zeros, ϵ=1e-10)
 
 Neural Arithmetic Logic Unit (NALU). [1]
 
     W = tanh.(Ŵ) .* sigmoid.(M̂)
-    a = W * x
-    g = sigmoid.(n.G * x)
-    m = exp.(W * (log.(abs.(x) .+ 1e-7)))
+    a = W * x .+ b1
+    g = sigmoid.(G * x .+ b2)
+    m = exp.(W * (log.(abs.(x) .+ ϵ)))
     g .* a + (1 .- g) .* m
 
 The input `x` is a:
@@ -15,24 +15,25 @@ The input `x` is a:
     
 [1]: https://arxiv.org/abs/1808.00508
 """
-struct NALU{T}
-    Ŵ::T
-    M̂::T
+struct NALU{N,T,S,E}
+    nac::N
     G::T
+    b::S
+    ϵ::E
 end
 
 
-function NALU(in::Integer, out::Integer; init = glorot_uniform)
-    return NALU(param(init(out, in)), param(init(out, in)), param(init(out, in)))
+function NALU(in::Integer, out::Integer; initW = glorot_uniform, initb = zeros, ϵ=1e-10)
+    return NALU(NAC(in, out), param(initW(out, in)), param(initb(out)), ϵ)
 end
 
 @treelike NALU
 
 function (n::NALU)(x)
-    W = tanh.(n.Ŵ) .* sigmoid.(n.M̂)
-    a = W * x
-    g = sigmoid.(n.G * x)
-    m = exp.(W * (log.(abs.(x) .+ 1e-7)))
+    nac, G, b, ϵ = n.nac, n.G, n.b, n.ϵ
+    a = nac(x)
+    g = sigmoid.(G * x .+ b)
+    m = exp.(nac((log.(abs.(x) .+ ϵ))))
     g .* a + (1 .- g) .* m
 end
 
