@@ -5,7 +5,7 @@ module NeuralArithmetic
 using Flux
 using Flux: @treelike, glorot_uniform, tanh, sigmoid
 
-export NAC, NALU
+export NAC, NALU, RNAC, RNALU
 
 include("nac.jl")
 include("nalu.jl")
