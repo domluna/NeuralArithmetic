@@ -27,7 +27,7 @@ end
 
 function (n::NAC)(x)
     Ŵ, M̂, b = n.Ŵ, n.M̂, n.b
-    W = tanh.(Ŵ) .* sigmoid.(M̂)
+    W = tanh.(Ŵ) .* σ_stable.(M̂)
     W * x .+ b
 end
 

@@ -32,7 +32,7 @@ end
 function (n::NALU)(x)
     nac, G, b, ϵ = n.nac, n.G, n.b, n.ϵ
     a = nac(x)
-    g = sigmoid.(G * x .+ b)
+    g = σ_stable.(G * x .+ b)
     m = exp.(nac((log.(abs.(x) .+ ϵ))))
     g .* a + (1 .- g) .* m
 end

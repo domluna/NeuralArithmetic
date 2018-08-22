@@ -1,7 +1,9 @@
 module NeuralArithmetic
 
 using Flux
-using Flux: @treelike, glorot_uniform, tanh, sigmoid
+using Flux: @treelike, glorot_uniform, tanh
+using NNlib: σ_stable
+
 
 export NAC, NALU, RNAC, RNALU
 
